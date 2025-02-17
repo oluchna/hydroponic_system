@@ -85,3 +85,13 @@ class HydroponicSystemEdit(RetrieveUpdateDestroyAPIView):
     queryset = HydroponicSystem.objects.all()
     serializer_class = HydroponicSystemSerializer
     lookup_field = "pk"
+
+    def retrieve(self, request, *args, **kwargs):
+        system_instance = self.get_object()
+        sensors = Sensor.objects.filter(system_id=system_instance).order_by('-read_dt')[:10]
+        sensor_serializer = SensorSerializer(sensors, many=True)
+        system_serializer = self.get_serializer(system_instance)
+        response_data = system_serializer.data
+        response_data['last_sensors_readings'] = sensor_serializer.data
+
+        return Response(response_data)
