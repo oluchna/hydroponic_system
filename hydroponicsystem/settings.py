@@ -45,8 +45,9 @@ INSTALLED_APPS = [
     'base.apps.BaseConfig',
     'rest_framework',
     'drf_yasg',
-    'drf_spectacular',
+    # 'drf_spectacular',
     'rest_framework.authtoken',
+    'rest_framework_simplejwt'
 ]
 
 MIDDLEWARE = [
@@ -151,5 +152,21 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10,
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ],
+        # 'rest_framework.authentication.TokenAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication'
+    ], 
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.IsAuthenticated',
+    # ]
+}
+
+SWAGGER_SETTINGS = {
+    'USE_SESSION_AUTH': False, 
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',  
+            'in': 'header',    
+            'name': 'Authorization', 
+        }
+    },
 }

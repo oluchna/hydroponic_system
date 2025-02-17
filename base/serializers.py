@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate
 from rest_framework import serializers
+from .models import HydroponicSystem, Sensor
 
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
@@ -19,3 +20,16 @@ class LoginSerializer(serializers.Serializer):
         
         attrs['user'] = user
         return attrs
+
+
+class HydroponicSystemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HydroponicSystem
+        fields = '__all__'  
+        read_only_fields = ['owner']  
+
+
+class SensorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Sensor
+        fields = '__all__'
