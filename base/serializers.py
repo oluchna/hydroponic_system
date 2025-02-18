@@ -1,9 +1,11 @@
-from django.contrib.auth import authenticate
-from rest_framework import serializers
-from .models import HydroponicSystem, Sensor
-import re
 from datetime import datetime
 import pytz
+
+from django.contrib.auth import authenticate
+from rest_framework import serializers
+
+from .models import HydroponicSystem, Sensor
+from .validators import validate_system_name, validate_activation_dt, validate_sensor_name, validate_read_dt
 
 
 class LoginSerializer(serializers.Serializer):
@@ -33,15 +35,10 @@ class HydroponicSystemSerializer(serializers.ModelSerializer):
         read_only_fields = ['owner']  
 
     def validate_system_name(self, system_name):
-        if len(system_name) < 3:
-            raise serializers.ValidationError("System name field must consist of at least 3 characters.")
-        return system_name
+        return validate_system_name(system_name)
 
     def validate_activation_dt(self, activation_dt):
-        now_utc = datetime.now(pytz.UTC)
-        if activation_dt > now_utc:
-            raise serializers.ValidationError("Activation datetime cannot be from the future.")
-        return activation_dt
+        return validate_activation_dt(activation_dt)
 
 
 class SensorSerializer(serializers.ModelSerializer):
@@ -50,12 +47,7 @@ class SensorSerializer(serializers.ModelSerializer):
         fields = '__all__'
     
     def validate_sensor_name(self, sensor_name):
-        if len(sensor_name) < 3:
-            raise serializers.ValidationError("Sensor name field must consist of at least 3 characters.")
-        return sensor_name
+        return validate_sensor_name(sensor_name)
 
     def validate_read_dt(self, read_dt):
-        now_utc = datetime.now(pytz.UTC)
-        if read_dt > now_utc:
-            raise serializers.ValidationError("Sensor reading datetime cannot be from the future.")
-        return read_dt
+        return validate_read_dt(read_dt)

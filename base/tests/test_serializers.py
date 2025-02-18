@@ -1,10 +1,11 @@
-import pytest
-from rest_framework.exceptions import ValidationError
 from datetime import datetime, timedelta
-import pytz
-from ..models import Sensor, HydroponicSystem, User
-from ..serializers import SensorSerializer, HydroponicSystemSerializer
 import uuid
+import pytz
+
+import pytest
+
+from ..models import HydroponicSystem, User
+from ..serializers import SensorSerializer, HydroponicSystemSerializer
 
 
 @pytest.mark.django_db

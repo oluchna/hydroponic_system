@@ -1,10 +1,12 @@
-from django.db import models
 import uuid
+
+from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class HydroponicSystem(models.Model):
+    """Hydroponic system model"""
     system_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     system_name = models.CharField(max_length=64, null=False, blank=False)
     volume = models.FloatField(validators=[
@@ -23,6 +25,7 @@ class HydroponicSystem(models.Model):
 
 
 class Sensor(models.Model):
+    """Sensor readings model"""
     system_id = models.ForeignKey(HydroponicSystem, on_delete=models.CASCADE, null=False, blank=False)
     sensor_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     sensor_name =  models.CharField(max_length=64, null=False, blank=False)

@@ -1,11 +1,12 @@
-from django.test import TestCase
-import pytest
-from django.contrib.auth.models import User
-from ..models import HydroponicSystem, Sensor
-from django.core.exceptions import ValidationError
 from datetime import datetime
 import uuid
 from django.utils import timezone
+
+import pytest
+from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+
+from ..models import HydroponicSystem, Sensor
 
 
 @pytest.mark.django_db
