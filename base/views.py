@@ -138,40 +138,7 @@ class HydroponicSystemView(ListCreateAPIView):
         serializer = self.get_serializer(systems, many=True)
         return self.get_paginated_response(serializer.data)
 
-# class HydroponicSystemView(APIView):
-#     permission_classes = [IsAuthenticated] 
 
-#     serializer_class = HydroponicSystemSerializer
-#     filter_backends = (filters.DjangoFilterBackend, OrderingFilter)
-#     filterset_class = HydroponicSystemFilter 
-#     pagination_class = HydroponicSystemPagination
-#     ordering_fields = ['system_name', 'volume', 'activation_dt', 'num_of_chambers']
-#     ordering = ['system_name']
-
-#     def get(self, request):
-#         systems = HydroponicSystem.objects.filter(owner=request.user)
-#         systems = self.filter_queryset(systems)
-#         systems = self.order_queryset(systems)
-#         paginator = self.pagination_class()
-#         result_page = paginator.paginate_queryset(systems, request)
-#         serializer = self.serializer_class(result_page, many=True)
-#         return paginator.get_paginated_response(serializer.data)
-
-#     @swagger_auto_schema(
-#     request_body=HydroponicSystemSerializer,  
-#     responses={200: openapi.Response('New hydroponic system addition', HydroponicSystemSerializer)} 
-#     )
-#     def post(self, request):
-#         data = request.data.copy() 
-#         data['owner'] = request.user.id 
-#         print(data['owner'])
-
-#         serializer = HydroponicSystemSerializer(data=data)
-#         if serializer.is_valid():
-#             serializer.save(owner=request.user) 
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class SensorReadingView(APIView):
@@ -206,4 +173,40 @@ class HydroponicSystemEdit(RetrieveUpdateDestroyAPIView):
 
         return Response(response_data)
     
+
+
+# class HydroponicSystemView(APIView):
+#     permission_classes = [IsAuthenticated] 
+
+#     serializer_class = HydroponicSystemSerializer
+#     filter_backends = (filters.DjangoFilterBackend, OrderingFilter)
+#     filterset_class = HydroponicSystemFilter 
+#     pagination_class = HydroponicSystemPagination
+#     ordering_fields = ['system_name', 'volume', 'activation_dt', 'num_of_chambers']
+#     ordering = ['system_name']
+
+#     def get(self, request):
+#         systems = HydroponicSystem.objects.filter(owner=request.user)
+#         systems = self.filter_queryset(systems)
+#         systems = self.order_queryset(systems)
+#         paginator = self.pagination_class()
+#         result_page = paginator.paginate_queryset(systems, request)
+#         serializer = self.serializer_class(result_page, many=True)
+#         return paginator.get_paginated_response(serializer.data)
+
+#     @swagger_auto_schema(
+#     request_body=HydroponicSystemSerializer,  
+#     responses={200: openapi.Response('New hydroponic system addition', HydroponicSystemSerializer)} 
+#     )
+#     def post(self, request):
+#         data = request.data.copy() 
+#         data['owner'] = request.user.id 
+#         print(data['owner'])
+
+#         serializer = HydroponicSystemSerializer(data=data)
+#         if serializer.is_valid():
+#             serializer.save(owner=request.user) 
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

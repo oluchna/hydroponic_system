@@ -34,7 +34,7 @@ class HydroponicSystemSerializer(serializers.ModelSerializer):
 
     def validate_system_name(self, system_name):
         if len(system_name) < 3:
-            raise serializers.ValidationError({"system_name": "System name field must consist of at least 3 characters."})
+            raise serializers.ValidationError("System name field must consist of at least 3 characters.")
         return system_name
 
     def validate_activation_dt(self, activation_dt):
@@ -51,7 +51,7 @@ class SensorSerializer(serializers.ModelSerializer):
     
     def validate_sensor_name(self, sensor_name):
         if len(sensor_name) < 3:
-            raise serializers.ValidationError({"sensor_name": "Sensor name field must consist of at least 3 characters."})
+            raise serializers.ValidationError("Sensor name field must consist of at least 3 characters.")
         return sensor_name
 
     def validate_read_dt(self, read_dt):
