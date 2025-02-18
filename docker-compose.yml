@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:14
+    container_name: postgres
+    environment:
+      - POSTGRES_DB=hydroponic_system
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      - hydroponic_network
+    ports:
+      - "5432:5432"
+    
+  hydroponicsystem:
+    image: hydroponicsystem
+    container_name: hydroponicsystem
+    environment:
+      - DB_NAME=postgres
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_HOST=postgres
+      - DB_PORT=5432
+    networks:
+      - hydroponic_network
+    ports:
+      - "8000:8000"
+
+networks:
+  hydroponic_network:
+    driver: bridge
