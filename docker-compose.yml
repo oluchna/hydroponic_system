@@ -22,6 +22,9 @@ services:
       - DB_PASSWORD=postgres
       - DB_HOST=postgres
       - DB_PORT=5432
+      - DJANGO_SUPERUSER_USERNAME=admin
+      - DJANGO_SUPERUSER_PASSWORD=SuperAdmin
+      - DJANGO_SUPERUSER_EMAIL=admin@localhost
     networks:
       - hydroponic_network
     ports:

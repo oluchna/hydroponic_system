@@ -14,4 +14,6 @@ EXPOSE 8000
 
 ENV DJANGO_ENV=production
 
-CMD ["sh", "-c", "poetry run python hydroponicsystem/manage.py migrate && poetry run python hydroponicsystem/manage.py runserver 0.0.0.0:8000"]
+CMD ["sh", "-c", "poetry run python hydroponicsystem/manage.py migrate && \
+poetry run python hydroponicsystem/manage.py createsuperuser --noinput --username \"$DJANGO_SUPERUSER_USERNAME\" --email \"$DJANGO_SUPERUSER_EMAIL\" || true && \
+poetry run python hydroponicsystem/manage.py runserver 0.0.0.0:8000"]
