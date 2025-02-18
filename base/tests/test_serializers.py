@@ -60,7 +60,7 @@ class TestSensorSerializer:
         assert serializer.errors["sensor_name"][0] == "Sensor name field must consist of at least 3 characters."
 
     def test_invalid_read_dt_in_future(self, hydroponic_system):
-        """Test validation when read_dt is in the future"""
+        """Test validation when read_dt is from the future"""
 
         invalid_data = {
             "system_id": hydroponic_system.system_id,
@@ -116,7 +116,7 @@ class TestHydroponicSystemSerializer:
         assert serializer.is_valid(), f"Serializer errors: {serializer.errors}"
 
     def test_invalid_system_name_too_short(user, hydroponic_system):
-        """"""
+        """Test if system name is too short (less than 3 letters)."""
         hydroponic_system["system_name"] = "A"
         serializer = HydroponicSystemSerializer(data=hydroponic_system)
         assert not serializer.is_valid()
@@ -124,6 +124,7 @@ class TestHydroponicSystemSerializer:
         assert serializer.errors["system_name"][0] == "System name field must consist of at least 3 characters."
 
     def test_invalid_activation_dt_in_future(user, hydroponic_system):
+        """Test if activation dt is from the future."""
         hydroponic_system["activation_dt"] = datetime.now(pytz.UTC) + timedelta(days=1)
         serializer = HydroponicSystemSerializer(data=hydroponic_system)
         assert not serializer.is_valid()

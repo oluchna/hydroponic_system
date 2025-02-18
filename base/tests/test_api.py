@@ -6,7 +6,7 @@ import pytest
 from rest_framework.test import APIClient
 from django.contrib.auth.models import User
 
-from base.models import HydroponicSystem
+from ..models import HydroponicSystem
 
 
 @pytest.mark.django_db
@@ -55,7 +55,7 @@ class TestHydroponicSystemAPI:
         }
         response = auth_client.post("/systems/", data, format="json")
 
-        assert response.status_code == 201  # Created
+        assert response.status_code == 201  
         assert response.data["system_name"] == "Test System"
 
     def test_get_hydroponic_systems(self, auth_client, hydroponic_systems):
@@ -67,7 +67,6 @@ class TestHydroponicSystemAPI:
         assert "System A" in system_names
         assert "System B" in system_names
         assert "Foreign System" not in system_names 
-
 
     def test_get_hydroponic_systems_with_filter(self, auth_client, hydroponic_systems):
         response = auth_client.get("/systems/", {"system_name": "System A"})

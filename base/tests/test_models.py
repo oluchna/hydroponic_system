@@ -59,11 +59,6 @@ def test_hydroponic_system_num_of_chambers_validation():
     with pytest.raises(ValidationError):
         system.full_clean()
 
-# @pytest.fixture
-# def user():
-#     """Fixture to create a User instance for the owner of the HydroponicSystem"""
-#     return User.objects.create_user(username="testuser", password="password")
-
 
 @pytest.fixture
 def hydroponic_system():
