@@ -1,11 +1,11 @@
 from django.urls import path
 
-from . import views
+from .views import auth, hydroponics, sensors
 
 
 urlpatterns = [ 
-    path('login/', views.LoginView.as_view(), name='login'), 
-    path('systems/', views.HydroponicSystemView.as_view(), name='systems'), 
-    path('sensors/', views.SensorReadingView.as_view(), name='sensors'), 
-    path('systems/<uuid:pk>/', views.HydroponicSystemEdit.as_view(), name='hydroponic-system-edit')
+    path('login/', auth.LoginView.as_view(), name='login'), 
+    path('systems/', hydroponics.HydroponicSystemView.as_view(), name='systems'), 
+    path('sensors/', sensors.SensorReadingView.as_view(), name='sensors'), 
+    path('systems/<uuid:pk>/', hydroponics.HydroponicSystemEdit.as_view(), name='hydroponic-system-edit')
 ]

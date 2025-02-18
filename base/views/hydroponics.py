@@ -1,58 +1,17 @@
 from drf_yasg.utils import swagger_auto_schema  
 from drf_yasg import openapi  
 
-from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import permission_classes
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListCreateAPIView
 from rest_framework.filters import OrderingFilter
-from rest_framework.pagination import PageNumberPagination
-from django_filters import rest_framework as filters
 from django_filters.rest_framework import DjangoFilterBackend
 
-from .serializers import LoginSerializer, HydroponicSystemSerializer, SensorSerializer
-from .models import HydroponicSystem, Sensor
-from rest_framework_simplejwt.tokens import RefreshToken
-
-
-class LoginView(APIView):
-    permission_classes = [AllowAny]
-
-    @swagger_auto_schema(
-        request_body=LoginSerializer,  
-        responses={200: openapi.Response('Logged', LoginSerializer)} 
-    )
-
-    def post(self, request):
-        serializer = LoginSerializer(data=request.data)
-        if serializer.is_valid():
-            user = serializer.validated_data['user']
-            refresh = RefreshToken.for_user(user)
-            access_token = str(refresh.access_token)
-
-            return Response({
-                'refresh': str(refresh),
-                'access': access_token,
-            })
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-
-class HydroponicSystemPagination(PageNumberPagination):
-    page_size = 3
-
-
-class HydroponicSystemFilter(filters.FilterSet):
-    system_name = filters.CharFilter(lookup_expr='icontains')
-    volume = filters.RangeFilter()
-    activation_dt = filters.DateTimeFromToRangeFilter()
-    num_of_chambers = filters.RangeFilter()
-
-    class Meta:
-        model = HydroponicSystem
-        fields = ['system_name', 'volume', 'activation_dt', 'num_of_chambers']
+from ..serializers import HydroponicSystemSerializer, SensorSerializer
+from ..models import HydroponicSystem, Sensor
+from ..filters import HydroponicSystemFilter
+from ..pagination import HydroponicSystemPagination
 
 
 class HydroponicSystemView(ListCreateAPIView):
@@ -148,18 +107,3 @@ class HydroponicSystemEdit(RetrieveUpdateDestroyAPIView):
         response_data['last_sensors_readings'] = sensor_serializer.data
 
         return Response(response_data)
-    
-
-class SensorReadingView(APIView):
-    permission_classes = [IsAuthenticated] 
-
-    @swagger_auto_schema(
-        request_body=SensorSerializer,
-        responses={201: SensorSerializer, 400: "Invalid data"}
-    )
-    def post(self, request):
-        serializer = SensorSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()  
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
