@@ -40,10 +40,9 @@ Swagger documentation can be accessed via below URL
 ![image](https://github.com/user-attachments/assets/4331971b-f7db-48f6-9295-7d8f52fdfb52)
 6. Copy access token from response body.
 7. Go to Authorize ![image](https://github.com/user-attachments/assets/fd1da474-946e-401c-9b40-e831f9bab417), enter **Bearer {access token}** and authorize.
+   Now you can test the rest of the endpoints. 
 
-Now you can test the rest of the endpoints. 
+9. Go to POST /systems/ and create new system.
 
-8. Go to POST /systems/ and create new system.
-
-To access system_id, go to admin panel, Hydroponic systems in BASE section and copy patricular system_id. Now you can use it other endpoints.
+   To access system_id, go to admin panel, Hydroponic systems in BASE section and copy patricular system_id. Now you can use it other endpoints.
 
