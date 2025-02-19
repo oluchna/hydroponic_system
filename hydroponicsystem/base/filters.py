@@ -4,6 +4,7 @@ from .models import HydroponicSystem
 
 
 class HydroponicSystemFilter(filters.FilterSet):
+    """Definition of the type of filters on the fields."""
     system_name = filters.CharFilter(lookup_expr='icontains')
     volume = filters.RangeFilter()
     activation_dt = filters.DateTimeFromToRangeFilter()

@@ -13,23 +13,28 @@ from ..models import HydroponicSystem
 class TestHydroponicSystemAPI:
     @pytest.fixture
     def user(self, db):
+        """Fixture to create a User instance."""
         return User.objects.create_user(username="testuser", password="password123")
     
     @pytest.fixture
     def user2(self, db):
+        """Fixture to create a second User instance."""
         return User.objects.create_user(username="otheruser", password="password123")
 
     @pytest.fixture
     def api_client(self):
+        """Fixture to create an API client."""
         return APIClient()
 
     @pytest.fixture
     def auth_client(self, api_client, user):
+        """Fixture to authenticate client."""
         api_client.force_authenticate(user=user)
         return api_client
     
     @pytest.fixture
     def hydroponic_systems(self, user, user2):
+        """Fixture to create hydroponic systems instances."""
         return [
             HydroponicSystem.objects.create(
                 system_name="System A", volume=500, activation_dt=datetime.now(pytz.UTC) - timedelta(days=10),
@@ -46,6 +51,7 @@ class TestHydroponicSystemAPI:
         ]
 
     def test_create_hydroponic_system(self, auth_client):
+        """Testing hydroponic system creation (POST)."""
         data = {
             "system_id": uuid.uuid4(),
             "system_name": "Test System",
@@ -59,6 +65,7 @@ class TestHydroponicSystemAPI:
         assert response.data["system_name"] == "Test System"
 
     def test_get_hydroponic_systems(self, auth_client, hydroponic_systems):
+        """Testing getting hydroponic systems list of a logged user - systems owner (GET)"""
         response = auth_client.get("/systems/")
         
         assert response.status_code == 200 
@@ -69,6 +76,7 @@ class TestHydroponicSystemAPI:
         assert "Foreign System" not in system_names 
 
     def test_get_hydroponic_systems_with_filter(self, auth_client, hydroponic_systems):
+        """Testing systems filtration."""
         response = auth_client.get("/systems/", {"system_name": "System A"})
         
         assert response.status_code == 200

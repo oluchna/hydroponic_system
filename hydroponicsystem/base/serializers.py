@@ -29,6 +29,7 @@ class LoginSerializer(serializers.Serializer):
 
 
 class HydroponicSystemSerializer(serializers.ModelSerializer):
+    """Hydroponic system serializer with system name and datetime fields validation."""
     class Meta:
         model = HydroponicSystem
         fields = '__all__'  
@@ -42,6 +43,7 @@ class HydroponicSystemSerializer(serializers.ModelSerializer):
 
 
 class SensorSerializer(serializers.ModelSerializer):
+    """Sensor reading serializer with sensor name and datetime fields validation."""
     class Meta:
         model = Sensor
         fields = '__all__'

@@ -15,6 +15,7 @@ from ..pagination import HydroponicSystemPagination
 
 
 class HydroponicSystemView(ListCreateAPIView):
+    """Enpoint for hydroponic system creation."""
     permission_classes = [IsAuthenticated]  
     serializer_class = HydroponicSystemSerializer
 
@@ -32,7 +33,7 @@ class HydroponicSystemView(ListCreateAPIView):
         serializer.save(owner=self.request.user)
 
     @swagger_auto_schema(
-        operation_description="List of hydroponic systems with filters.",
+        operation_description="Endpoint to get hydroponic systems with filters, ordering and pagination (3 elements per page).",
         manual_parameters=[
             openapi.Parameter(
                 'ordering',
@@ -61,13 +62,13 @@ class HydroponicSystemView(ListCreateAPIView):
             openapi.Parameter(
                 'activation_dt_from',
                 openapi.IN_QUERY,
-                description="Filter by minimum activation date (ISO 8601).",
+                description="Filter by minimum activation date.",
                 type=openapi.TYPE_STRING
             ),
             openapi.Parameter(
                 'activation_dt_to',
                 openapi.IN_QUERY,
-                description="Filter by maximum activation date (ISO 8601).",
+                description="Filter by maximum activation date.",
                 type=openapi.TYPE_STRING
             ),
             openapi.Parameter(
@@ -92,18 +93,46 @@ class HydroponicSystemView(ListCreateAPIView):
 
 
 class HydroponicSystemEdit(RetrieveUpdateDestroyAPIView):
-    permission_classes = [IsAuthenticated] 
-
+    """
+    Hydroponic system with given system_id endpoint.
+    """
+    permission_classes = [IsAuthenticated]
     queryset = HydroponicSystem.objects.all()
     serializer_class = HydroponicSystemSerializer
     lookup_field = "pk"
 
-    def retrieve(self, request, *args, **kwargs):
+    @swagger_auto_schema(
+        operation_description="Retrieve the details of the specified hydroponic system, including the last 10 sensor readings.",
+        responses={200: HydroponicSystemSerializer()},
+    )
+    def get(self, request, *args, **kwargs):
         system_instance = self.get_object()
         sensors = Sensor.objects.filter(system_id=system_instance).order_by('-read_dt')[:10]
         sensor_serializer = SensorSerializer(sensors, many=True)
         system_serializer = self.get_serializer(system_instance)
         response_data = system_serializer.data
         response_data['last_sensors_readings'] = sensor_serializer.data
-
         return Response(response_data)
+
+    @swagger_auto_schema(
+        operation_description="Update the details of the specified hydroponic system.",
+        request_body=HydroponicSystemSerializer,
+        responses={200: HydroponicSystemSerializer()},
+    )
+    def put(self, request, *args, **kwargs):
+        return super().update(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        operation_description="Partially update the specified hydroponic system.",
+        request_body=HydroponicSystemSerializer,
+        responses={200: HydroponicSystemSerializer()},
+    )
+    def patch(self, request, *args, **kwargs):
+        return super().partial_update(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        operation_description="Delete the specified hydroponic system.",
+        responses={204: 'No Content'},
+    )
+    def delete(self, request, *args, **kwargs):
+        return super().destroy(request, *args, **kwargs)

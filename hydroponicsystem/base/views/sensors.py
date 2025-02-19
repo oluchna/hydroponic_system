@@ -10,6 +10,8 @@ from ..serializers import SensorSerializer
 
 
 class SensorReadingView(APIView):
+    """Sensor readings creation endpoint."""
+
     permission_classes = [IsAuthenticated] 
 
     @swagger_auto_schema(

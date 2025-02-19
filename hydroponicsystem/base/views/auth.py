@@ -11,13 +11,13 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 
 class LoginView(APIView):
+    """Endpoint used to authenticate users."""
     permission_classes = [AllowAny]
 
     @swagger_auto_schema(
         request_body=LoginSerializer,  
         responses={200: openapi.Response('Logged', LoginSerializer)} 
     )
-
     def post(self, request):
         serializer = LoginSerializer(data=request.data)
         if serializer.is_valid():
