@@ -2,6 +2,12 @@
 
 - Python 3.12.*
 - Docker
+- Git
+
+## Clone Githhub repository
+**- Create new folder, where you will store the project.**
+
+	 git clone https://github.com/oluchna/hydroponic_system.git
 
 ## Building image
 **Building the application image**
@@ -20,3 +26,4 @@
 Swagger documentation can be accessed via below URL
 
 	http://localhost:8000/swagger/
+
