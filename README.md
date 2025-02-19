@@ -38,3 +38,6 @@ Swagger documentation can be accessed via below URL
 4. Go to ```http://localhost:8000/swagger/```
 5. Log in in /POST/login/ endpoint
 ![image](https://github.com/user-attachments/assets/4331971b-f7db-48f6-9295-7d8f52fdfb52)
+6. Copy access token from response body.
+7. Go to Authorize ![image](https://github.com/user-attachments/assets/fd1da474-946e-401c-9b40-e831f9bab417), enter Bearer {access token} and authorize.
+
