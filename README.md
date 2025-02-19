@@ -27,7 +27,7 @@ Swagger documentation can be accessed via below URL
 
 	http://localhost:8000/swagger/
 
-## Testing API
+## Accessing API
 1. Go to ```http://localhost:8000/admin/```
 
 2. Log in with credentials:
